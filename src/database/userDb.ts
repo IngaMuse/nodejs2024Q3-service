@@ -1,6 +1,6 @@
-import { CreateUserDto } from "src/rotes/user/dto/create-user.dto";
-import { UpdateUserDto } from "src/rotes/user/dto/update-user.dto";
-import { User } from "src/rotes/user/entities/user.entity";
+import { CreateUserDto } from "src/routes/user/dto/create-user.dto";
+import { UpdateUserDto } from "src/routes/user/dto/update-user.dto";
+import { User } from "src/routes/user/entities/user.entity";
 import { UUID } from "src/types/types";
 import { v4 as uuidv4 } from 'uuid';
 

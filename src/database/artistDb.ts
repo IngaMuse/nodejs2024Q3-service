@@ -1,6 +1,6 @@
-import { CreateArtistDto } from "src/rotes/artist/dto/create-artist.dto";
-import { UpdateArtistDto } from "src/rotes/artist/dto/update-artist.dto";
-import { Artist } from "src/rotes/artist/entities/artist.entity";
+import { CreateArtistDto } from "src/routes/artist/dto/create-artist.dto";
+import { UpdateArtistDto } from "src/routes/artist/dto/update-artist.dto";
+import { Artist } from "src/routes/artist/entities/artist.entity";
 import { UUID } from "src/types/types";
 import { v4 as uuidv4 } from 'uuid';
 
