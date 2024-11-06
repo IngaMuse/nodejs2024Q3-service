@@ -1,8 +1,10 @@
 import { CreateAlbumDto } from "src/routes/album/dto/create-album.dto";
 import { UpdateAlbumDto } from "src/routes/album/dto/update-album.dto";
 import { Album } from "src/routes/album/entities/album.entity";
+import { Track } from "src/routes/track/entities/track.entity";
 import { UUID } from "src/types/types";
 import { v4 as uuidv4 } from 'uuid';
+import { TrackDb } from "./trackDb";
 
 export class AlbumDb { 
 
