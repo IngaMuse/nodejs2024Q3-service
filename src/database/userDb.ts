@@ -1,10 +1,10 @@
-import { CreateUserDto } from "src/rotes/users/dto/create-user.dto";
-import { UpdateUserDto } from "src/rotes/users/dto/update-user.dto";
-import { User } from "src/rotes/users/entities/user.entity";
+import { CreateUserDto } from "src/rotes/user/dto/create-user.dto";
+import { UpdateUserDto } from "src/rotes/user/dto/update-user.dto";
+import { User } from "src/rotes/user/entities/user.entity";
 import { UUID } from "src/types/types";
 import { v4 as uuidv4 } from 'uuid';
 
-export class UsersDb {
+export class UserDb {
   private users: User[] = [];
 
   public getAllUsers(): User[] {
@@ -48,4 +48,4 @@ export class UsersDb {
   }
 }
 
-export const usersDb = new UsersDb();
+export const userDb = new UserDb();
