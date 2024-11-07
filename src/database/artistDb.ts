@@ -4,6 +4,7 @@ import { Artist } from 'src/routes/artist/entities/artist.entity';
 import { UUID } from 'src/types/types';
 import { v4 as uuidv4 } from 'uuid';
 import { DB, db } from './db';
+import { favsDb } from './favsDb';
 
 export class ArtistDb {
   constructor(private readonly db: DB) {}
@@ -40,21 +41,18 @@ export class ArtistDb {
   public deleteArtist(id: UUID) {
     this.db.artists = this.db.artists.filter((artist) => artist.id !== id);
     this.db.tracks = this.db.tracks.map((track) =>
-      track.artistId !== id
-        ? track
-        : {
+      track.artistId !== id ? track: {
             ...track,
             artistId: null,
           },
     );
     this.db.albums = this.db.albums.map((album) =>
-      album.artistId !== id
-        ? album
-        : {
+      album.artistId !== id ? album: {
             ...album,
             artistId: null,
           },
     );
+    favsDb.removeArtistFromFavorites(id);
   }
 }
 

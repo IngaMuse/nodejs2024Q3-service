@@ -3,16 +3,16 @@ import { UpdateUserDto } from "src/routes/user/dto/update-user.dto";
 import { User } from "src/routes/user/entities/user.entity";
 import { UUID } from "src/types/types";
 import { v4 as uuidv4 } from 'uuid';
+import { DB, db } from "./db";
 
 export class UserDb {
-  private users: User[] = [];
-
+  constructor(private readonly db: DB) {}
   public getAllUsers(): User[] {
-    return this.users;
+    return this.db.users;
   }
 
   public getUserById(id: UUID): User {
-    return this.users.find((user) => user.id === id);
+    return this.db.users.find((user) => user.id === id);
   }
 
   public createUser(dto: CreateUserDto): User {
@@ -24,12 +24,12 @@ export class UserDb {
       createdAt: timeNow,
       updatedAt: timeNow,
     };
-    this.users.push(user);
+    this.db.users.push(user);
     return user;
   }
 
   public updateUser(id: UUID, dto: UpdateUserDto) {
-    const user = this.users.find((user) => user.id === id);
+    const user = this.db.users.find((user) => user.id === id);
     const updatedUser: User = {
       ...user,
       version: user.version + 1,
@@ -37,15 +37,15 @@ export class UserDb {
       updatedAt: Date.now(),
     };
 
-    this.users = this.users.map((user) =>
+    this.db.users = this.db.users.map((user) =>
       user.id !== id ? user : updatedUser,
     );
     return updatedUser;
   }
 
   public deleteUser(id: UUID) {
-    this.users = this.users.filter((user) => user.id !== id);
+    this.db.users = this.db.users.filter((user) => user.id !== id);
   }
 }
 
-export const userDb = new UserDb();
+export const userDb = new UserDb(db);

@@ -4,9 +4,9 @@ import { Track } from "src/routes/track/entities/track.entity";
 import { UUID } from "src/types/types";
 import { v4 as uuidv4 } from 'uuid';
 import { DB, db } from "./db";
-import { Injectable } from "@nestjs/common";
+import { Favorites } from "src/routes/favs/entities/fav.entity";
+import { favsDb } from "./favsDb";
 
-@Injectable()
 export class TrackDb {
   constructor( private readonly db: DB) {}
 
@@ -45,6 +45,7 @@ export class TrackDb {
 
   public deleteTrack(id: UUID) {
     this.db.tracks = this.db.tracks.filter((track) => track.id !== id);
+    favsDb.removeTrackFromFavorites(id);
   }
 }
 
