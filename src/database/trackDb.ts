@@ -3,17 +3,19 @@ import { UpdateTrackDto } from "src/routes/track/dto/update-track.dto";
 import { Track } from "src/routes/track/entities/track.entity";
 import { UUID } from "src/types/types";
 import { v4 as uuidv4 } from 'uuid';
+import { DB, db } from "./db";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class TrackDb {
-
-  private tracks: Track[] = [];
+  constructor( private readonly db: DB) {}
 
   public getAllTracks() {
-    return this.tracks;
+    return this.db.tracks;
   }
 
   public getTrackById(id: UUID) {
-    return this.tracks.find((track) => track.id === id);
+    return this.db.tracks.find((track) => track.id === id);
   }
 
   public createTrack(dto: CreateTrackDto): Track {
@@ -25,7 +27,7 @@ export class TrackDb {
       artistId: artistId || null,
       albumId: albumId || null,
     };
-    this.tracks.push(track);
+    this.db.tracks.push(track);
     return track;
   }
 
@@ -35,24 +37,15 @@ export class TrackDb {
       ...track,
       ...dto,
     };
-    this.tracks = this.tracks.map((track) =>
+    this.db.tracks = this.db.tracks.map((track) =>
       track.id !== id ? track : updatedTrack,
     );
     return updatedTrack;
   }
 
   public deleteTrack(id: UUID) {
-    this.tracks = this.tracks.filter((track) => track.id !== id);
+    this.db.tracks = this.db.tracks.filter((track) => track.id !== id);
   }
-
-  public removeAlbumId(albumId: UUID) {
-    this.tracks.forEach(track => {
-      if (track.albumId === albumId) {
-        track.albumId = null;
-      }
-    });
 }
 
-}
-
-export const trackDb = new TrackDb();
+export const trackDb = new TrackDb(db);
