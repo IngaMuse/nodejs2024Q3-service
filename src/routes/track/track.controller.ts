@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, HttpStatus, HttpCode, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Put,
+  HttpStatus,
+  HttpCode,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { TrackService } from './track.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
@@ -26,7 +37,10 @@ export class TrackController {
   }
 
   @Put(':id')
-  update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateTrackDto: UpdateTrackDto): Track {
+  update(
+    @Param('id', ParseUUIDPipe) id: UUID,
+    @Body() updateTrackDto: UpdateTrackDto,
+  ): Track {
     return this.trackService.update(id, updateTrackDto);
   }
 

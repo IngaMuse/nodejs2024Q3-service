@@ -1,12 +1,12 @@
-import { FavoritesResponse } from "src/routes/favs/entities/fav.entity";
-import { DB, db } from "./db";
-import { UUID } from "src/types/types";
-import { artistDb } from "./artistDb";
-import { albumDb } from "./albumDb";
-import { trackDb } from "./trackDb";
+import { FavoritesResponse } from 'src/routes/favs/entities/fav.entity';
+import { DB, db } from './db';
+import { UUID } from 'src/types/types';
+import { artistDb } from './artistDb';
+import { albumDb } from './albumDb';
+import { trackDb } from './trackDb';
 
 export class FavsDb {
-  constructor(private readonly db: DB) { }
+  constructor(private readonly db: DB) {}
 
   public getAllFavorites(): FavoritesResponse {
     return {

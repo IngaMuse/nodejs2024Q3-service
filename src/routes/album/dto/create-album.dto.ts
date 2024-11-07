@@ -6,7 +6,7 @@ class UnnecessaryFields {
   readonly artistId: string | null;
 }
 
-export class CreateAlbumDto extends PartialType(UnnecessaryFields){
+export class CreateAlbumDto extends PartialType(UnnecessaryFields) {
   @IsNotEmpty()
   @IsString()
   name: string;

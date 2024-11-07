@@ -9,5 +9,4 @@ export class User {
 
   @Exclude()
   password: string;
-
 }

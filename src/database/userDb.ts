@@ -1,9 +1,9 @@
-import { CreateUserDto } from "src/routes/user/dto/create-user.dto";
-import { UpdateUserDto } from "src/routes/user/dto/update-user.dto";
-import { User } from "src/routes/user/entities/user.entity";
-import { UUID } from "src/types/types";
+import { CreateUserDto } from 'src/routes/user/dto/create-user.dto';
+import { UpdateUserDto } from 'src/routes/user/dto/update-user.dto';
+import { User } from 'src/routes/user/entities/user.entity';
+import { UUID } from 'src/types/types';
 import { v4 as uuidv4 } from 'uuid';
-import { DB, db } from "./db";
+import { DB, db } from './db';
 
 export class UserDb {
   constructor(private readonly db: DB) {}

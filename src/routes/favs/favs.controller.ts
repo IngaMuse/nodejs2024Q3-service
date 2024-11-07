@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Param, Delete, HttpCode, HttpStatus, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { FavsService } from './favs.service';
 import { FavoritesResponse } from './entities/fav.entity';
 import { UUID } from 'src/types/types';

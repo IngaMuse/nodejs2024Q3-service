@@ -21,7 +21,7 @@ export class TrackService {
     return track;
   }
 
-  update(id: UUID, updateTrackDto: UpdateTrackDto):Track {
+  update(id: UUID, updateTrackDto: UpdateTrackDto): Track {
     this.findOne(id);
     return trackDb.updateTrack(id, updateTrackDto);
   }

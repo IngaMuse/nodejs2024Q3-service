@@ -1,13 +1,24 @@
-import { Controller, Get, Post, Body, Param, Delete, HttpCode, HttpStatus, ParseUUIDPipe, Put } from '@nestjs/common';
-import { userService } from './user.service';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+  ParseUUIDPipe,
+  Put,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UUID } from 'src/types/types';
+import { UserService } from './user.service';
 
 @Controller('user')
-export class userController {
-  constructor(private readonly userService: userService) {}
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
@@ -26,7 +37,10 @@ export class userController {
   }
 
   @Put(':id')
-  update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateUserDto: UpdateUserDto): User {
+  update(
+    @Param('id', ParseUUIDPipe) id: UUID,
+    @Body() updateUserDto: UpdateUserDto,
+  ): User {
     return this.userService.update(id, updateUserDto);
   }
 

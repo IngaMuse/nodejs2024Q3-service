@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -6,7 +10,7 @@ import { userDb } from 'src/database/userDb';
 import { UUID } from 'src/types/types';
 
 @Injectable()
-export class userService {
+export class UserService {
   create(createUserDto: CreateUserDto): User {
     const user = userDb.createUser(createUserDto);
     return this.createUserResponse(user);
@@ -29,7 +33,7 @@ export class userService {
     if (user.password !== updateUserDto.oldPassword)
       throw new ForbiddenException();
     const updatedUser = userDb.updateUser(id, updateUserDto);
-    return this.createUserResponse(updatedUser);;
+    return this.createUserResponse(updatedUser);
   }
 
   remove(id: UUID) {

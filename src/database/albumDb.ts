@@ -1,13 +1,13 @@
-import { CreateAlbumDto } from "src/routes/album/dto/create-album.dto";
-import { UpdateAlbumDto } from "src/routes/album/dto/update-album.dto";
-import { Album } from "src/routes/album/entities/album.entity";
-import { UUID } from "src/types/types";
+import { CreateAlbumDto } from 'src/routes/album/dto/create-album.dto';
+import { UpdateAlbumDto } from 'src/routes/album/dto/update-album.dto';
+import { Album } from 'src/routes/album/entities/album.entity';
+import { UUID } from 'src/types/types';
 import { v4 as uuidv4 } from 'uuid';
-import { DB, db } from "./db";
-import { favsDb } from "./favsDb";
+import { DB, db } from './db';
+import { favsDb } from './favsDb';
 
-export class AlbumDb { 
-  constructor( private readonly db: DB) {}
+export class AlbumDb {
+  constructor(private readonly db: DB) {}
 
   public getAllAlbums(): Album[] {
     return this.db.albums;
@@ -41,7 +41,9 @@ export class AlbumDb {
   public deleteAlbum(id: UUID) {
     this.db.albums = this.db.albums.filter((album) => album.id !== id);
     this.db.tracks = this.db.tracks.map((track) =>
-      track.albumId !== id ? track: {
+      track.albumId !== id
+        ? track
+        : {
             ...track,
             albumId: null,
           },

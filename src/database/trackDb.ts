@@ -1,14 +1,13 @@
-import { CreateTrackDto } from "src/routes/track/dto/create-track.dto";
-import { UpdateTrackDto } from "src/routes/track/dto/update-track.dto";
-import { Track } from "src/routes/track/entities/track.entity";
-import { UUID } from "src/types/types";
+import { CreateTrackDto } from 'src/routes/track/dto/create-track.dto';
+import { UpdateTrackDto } from 'src/routes/track/dto/update-track.dto';
+import { Track } from 'src/routes/track/entities/track.entity';
+import { UUID } from 'src/types/types';
 import { v4 as uuidv4 } from 'uuid';
-import { DB, db } from "./db";
-import { Favorites } from "src/routes/favs/entities/fav.entity";
-import { favsDb } from "./favsDb";
+import { DB, db } from './db';
+import { favsDb } from './favsDb';
 
 export class TrackDb {
-  constructor( private readonly db: DB) {}
+  constructor(private readonly db: DB) {}
 
   public getAllTracks() {
     return this.db.tracks;

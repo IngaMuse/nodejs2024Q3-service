@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { FavoritesResponse } from './entities/fav.entity';
 import { favsDb } from 'src/database/favsDb';
 import { UUID } from 'src/types/types';
@@ -8,7 +12,6 @@ import { artistDb } from 'src/database/artistDb';
 
 @Injectable()
 export class FavsService {
-  
   findAll(): FavoritesResponse {
     return favsDb.getAllFavorites();
   }
@@ -48,5 +51,4 @@ export class FavsService {
     if (!track) throw new NotFoundException();
     favsDb.removeTrackFromFavorites(id);
   }
-
 }
