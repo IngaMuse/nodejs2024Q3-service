@@ -2,62 +2,49 @@ import { CreateArtistDto } from 'src/routes/artist/dto/create-artist.dto';
 import { UpdateArtistDto } from 'src/routes/artist/dto/update-artist.dto';
 import { Artist } from 'src/routes/artist/entities/artist.entity';
 import { UUID } from 'src/types/types';
-import { v4 as uuidv4 } from 'uuid';
-import { DB, db } from './db';
-import { favsDb } from './favsDb';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/routes/prisma/prisma.service';
 
+@Injectable()
 export class ArtistDb {
-  constructor(private readonly db: DB) {}
+  constructor(private prisma: PrismaService) {}
 
-  public getAllArtists(): Artist[] {
-    return this.db.artists;
+  public async getAllArtists(): Promise<Artist[]> {
+    return await this.prisma.artist.findMany();
   }
 
-  public getArtistById(id: UUID): Artist {
-    return this.db.artists.find((artist) => artist.id === id);
+  public async getArtistById(id: UUID): Promise<Artist> {
+    return await this.prisma.artist.findUnique({
+      where: { id },
+    });
   }
 
-  public createArtist(dto: CreateArtistDto): Artist {
-    const artist = {
-      id: uuidv4(),
-      ...dto,
-    };
-    this.db.artists.push(artist);
-    return artist;
+  public async createArtist(dto: CreateArtistDto): Promise<Artist> {
+    return await this.prisma.artist.create({
+      data: {
+        ...dto,
+      },
+    });
   }
 
-  public updateArtist(id: UUID, dto: UpdateArtistDto): Artist {
-    const artist = this.getArtistById(id);
-    const updatedArtist = {
-      ...artist,
-      ...dto,
-    };
-    this.db.artists = this.db.artists.map((artist) =>
-      artist.id !== id ? artist : updatedArtist,
-    );
-    return updatedArtist;
+  public async updateArtist(id: UUID, dto: UpdateArtistDto): Promise<Artist> {
+    return await this.prisma.artist.update({
+      where: {
+        id,
+      },
+      data: {
+        ...dto,
+      },
+    });
   }
 
-  public deleteArtist(id: UUID) {
-    this.db.artists = this.db.artists.filter((artist) => artist.id !== id);
-    this.db.tracks = this.db.tracks.map((track) =>
-      track.artistId !== id
-        ? track
-        : {
-            ...track,
-            artistId: null,
-          },
-    );
-    this.db.albums = this.db.albums.map((album) =>
-      album.artistId !== id
-        ? album
-        : {
-            ...album,
-            artistId: null,
-          },
-    );
-    favsDb.removeArtistFromFavorites(id);
+  public async deleteArtist(id: UUID): Promise<void> {
+    await this.prisma.artist.delete({
+      where: {
+        id,
+      },
+    });
   }
 }
 
-export const artistDb = new ArtistDb(db);
+export const artistDb = new ArtistDb(new PrismaService);

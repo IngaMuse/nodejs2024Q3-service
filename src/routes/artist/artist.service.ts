@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { Artist } from './entities/artist.entity';
@@ -7,27 +7,36 @@ import { UUID } from 'src/types/types';
 
 @Injectable()
 export class ArtistService {
-  create(createArtistDto: CreateArtistDto): Artist {
-    return artistDb.createArtist(createArtistDto);
+
+  async create(createArtistDto: CreateArtistDto): Promise<Artist> {
+    try {
+      return await artistDb.createArtist(createArtistDto);
+    } catch (error) {
+      throw new BadRequestException();
+    }
   }
 
-  findAll() {
-    return artistDb.getAllArtists();
+  async findAll(): Promise<Artist[]> {
+    return await artistDb.getAllArtists();
   }
 
-  findOne(id: UUID) {
-    const artist = artistDb.getArtistById(id);
+  async findOne(id: UUID): Promise<Artist> {
+    const artist = await artistDb.getArtistById(id);
     if (!artist) throw new NotFoundException();
     return artist;
   }
 
-  update(id: UUID, updateArtistDto: UpdateArtistDto) {
-    this.findOne(id);
-    return artistDb.updateArtist(id, updateArtistDto);
+  async update(id: UUID, updateArtistDto: UpdateArtistDto): Promise<Artist> {
+    await this.findOne(id);
+    try {
+      return await artistDb.updateArtist(id, updateArtistDto);
+    } catch {
+      throw new BadRequestException();
+    }
   }
 
-  remove(id: UUID) {
-    const artist = this.findOne(id);
+  async remove(id: UUID) {
+    const artist = await this.findOne(id);
     if (artist) artistDb.deleteArtist(id);
   }
 }

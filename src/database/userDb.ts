@@ -2,7 +2,9 @@ import { CreateUserDto } from 'src/routes/user/dto/create-user.dto';
 import { User } from 'src/routes/user/entities/user.entity';
 import { UUID } from 'src/types/types';
 import { PrismaService } from 'src/routes/prisma/prisma.service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class UserDb {
   constructor(private prisma: PrismaService) {}
   
@@ -24,7 +26,6 @@ export class UserDb {
     });
   }
 
-
   public async updateUser(id: UUID, password: string,
     version: number):Promise <User> {
       return await this.prisma.user.update({
@@ -32,6 +33,7 @@ export class UserDb {
         data: { password, version },
       });
   };
+  
   public async deleteUser(id: UUID): Promise<void> {
     await this.prisma.user.delete({
       where: { id },
