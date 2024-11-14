@@ -1,16 +1,14 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 
-class UnnecessaryFields {
-  @IsUUID()
-  readonly artistId: string | null;
-}
-
-export class CreateAlbumDto extends PartialType(UnnecessaryFields) {
+export class CreateAlbumDto {
   @IsNotEmpty()
   @IsString()
-  name: string;
+  readonly name: string;
   @IsNotEmpty()
   @IsNumber()
-  year: number;
+  readonly year: number;
+
+  @IsOptional()
+  @IsUUID()
+  readonly artistId: string | null;
 }
