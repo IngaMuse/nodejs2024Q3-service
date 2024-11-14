@@ -1,50 +1,107 @@
 import { FavoritesResponse } from 'src/routes/favs/entities/fav.entity';
-import { DB, db } from './db';
 import { UUID } from 'src/types/types';
-import { artistDb } from './artistDb';
-import { albumDb } from './albumDb';
-import { trackDb } from './trackDb';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/routes/prisma/prisma.service';
 
+@Injectable()
 export class FavsDb {
-  constructor(private readonly db: DB) {}
+  constructor(private prisma: PrismaService) {}
 
-  public getAllFavorites(): FavoritesResponse {
+  public async getAllFavorites(): Promise<FavoritesResponse> {
+    const favorites = await this.prisma.favorites.findUnique({
+      where: { id: 0 },
+      include: {
+        artists: true,
+        albums: true,
+        tracks: true,
+      },
+    });
     return {
-      artists: this.db.favs.artists.map((id) => artistDb.getArtistById(id)),
-      albums: this.db.favs.albums.map((id) => albumDb.getAlbumById(id)),
-      tracks: this.db.favs.tracks.map((id) => trackDb.getTrackById(id)),
+      artists: favorites?.artists ? [...favorites.artists] : [],
+      albums: favorites?.albums ? [...favorites?.albums] : [],
+      tracks: favorites?.tracks ? [...favorites?.tracks] : [],
     };
   }
 
-  public addTrackToFavorites(id: UUID) {
-    this.db.favs.tracks.push(id);
+  public async addTrackToFavorites(id: UUID): Promise<void> {
+    await this.prisma.favorites.upsert({
+      where: { id: 0 },
+      create: {
+        tracks: {
+          connect: { id },
+        },
+      },
+      update: {
+        tracks: {
+          connect: { id },
+        },
+      },
+    });
   }
 
-  public addAlbumToFavorites(id: UUID) {
-    this.db.favs.albums.push(id);
+  public async addAlbumToFavorites(id: UUID) {
+    return await this.prisma.favorites.upsert({
+      where: { id: 0 },
+      create: {
+        albums: {
+          connect: { id },
+        },
+      },
+      update: {
+        albums: {
+          connect: { id },
+        },
+      },
+    });
   }
 
-  public addArtistToFavorites(id: UUID) {
-    this.db.favs.artists.push(id);
+  public async addArtistToFavorites(id: UUID) {
+    return await this.prisma.favorites.upsert({
+      where: { id: 0 },
+      create: {
+        artists: {
+          connect: { id },
+        },
+      },
+      update: {
+        artists: {
+          connect: { id },
+        },
+      },
+    });
+  }
+  public async removeTrackFromFavorites(id: UUID) {
+    await this.prisma.favorites.update({
+      where: { id: 0 },
+      data: {
+        tracks: {
+          disconnect: { id },
+        },
+      },
+    });
   }
 
-  public removeTrackFromFavorites(id: UUID) {
-    this.db.favs.tracks = this.db.favs.tracks.filter(
-      (trackId) => trackId !== id,
-    );
+  public async removeAlbumFromFavorites(id: UUID) {
+    await this.prisma.favorites.update({
+      where: { id: 0 },
+      data: {
+        albums: {
+          disconnect: { id },
+        },
+      },
+    });
   }
 
-  public removeAlbumFromFavorites(id: UUID) {
-    this.db.favs.albums = this.db.favs.albums.filter(
-      (albumId) => albumId !== id,
-    );
-  }
-
-  public removeArtistFromFavorites(id: UUID) {
-    this.db.favs.artists = this.db.favs.artists.filter(
-      (artistId) => artistId !== id,
-    );
+  public async removeArtistFromFavorites(id: UUID) {
+    await this.prisma.favorites.update({
+      where: { id: 0 },
+      data: {
+        artists: {
+          disconnect: { id },
+        },
+      },
+    });
   }
 }
 
-export const favsDb = new FavsDb(db);
+export const favsDb = new FavsDb(new PrismaService);

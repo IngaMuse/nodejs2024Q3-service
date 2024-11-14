@@ -12,43 +12,44 @@ import { artistDb } from 'src/database/artistDb';
 
 @Injectable()
 export class FavsService {
-  findAll(): FavoritesResponse {
-    return favsDb.getAllFavorites();
+
+  async findAll(): Promise<FavoritesResponse> {
+    return await favsDb.getAllFavorites();
   }
 
-  addArtist(id: UUID) {
-    const artist = artistDb.getArtistById(id);
+  async addArtist(id: UUID) {
+    const artist = await artistDb.getArtistById(id);
     if (!artist) throw new UnprocessableEntityException();
-    favsDb.addArtistToFavorites(id);
+    await favsDb.addArtistToFavorites(id);
   }
 
-  addAlbum(id: UUID) {
-    const album = albumDb.getAlbumById(id);
+  async addAlbum(id: UUID) {
+    const album = await albumDb.getAlbumById(id);
     if (!album) throw new UnprocessableEntityException();
-    favsDb.addAlbumToFavorites(id);
+    await favsDb.addAlbumToFavorites(id);
   }
 
-  addTrack(id: UUID) {
-    const track = trackDb.getTrackById(id);
+  async addTrack(id: UUID) {
+    const track = await trackDb.getTrackById(id);
     if (!track) throw new UnprocessableEntityException();
-    favsDb.addTrackToFavorites(id);
+    await favsDb.addTrackToFavorites(id);
   }
 
-  removeArtist(id: UUID) {
-    const artist = artistDb.getArtistById(id);
+  async removeArtist(id: UUID): Promise<void> {
+    const artist = await artistDb.getArtistById(id);
     if (!artist) throw new NotFoundException();
-    favsDb.removeArtistFromFavorites(id);
+    await favsDb.removeArtistFromFavorites(id);
   }
 
-  removeAlbum(id: UUID) {
-    const album = albumDb.getAlbumById(id);
+  async removeAlbum(id: UUID): Promise<void> {
+    const album = await albumDb.getAlbumById(id);
     if (!album) throw new NotFoundException();
-    favsDb.removeAlbumFromFavorites(id);
+    await favsDb.removeAlbumFromFavorites(id);
   }
 
-  removeTrack(id: UUID) {
-    const track = trackDb.getTrackById(id);
+  async removeTrack(id: UUID): Promise<void> {
+    const track = await trackDb.getTrackById(id);
     if (!track) throw new NotFoundException();
-    favsDb.removeTrackFromFavorites(id);
+    await favsDb.removeTrackFromFavorites(id);
   }
 }
