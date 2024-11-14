@@ -2,50 +2,61 @@ import { CreateTrackDto } from 'src/routes/track/dto/create-track.dto';
 import { UpdateTrackDto } from 'src/routes/track/dto/update-track.dto';
 import { Track } from 'src/routes/track/entities/track.entity';
 import { UUID } from 'src/types/types';
-import { v4 as uuidv4 } from 'uuid';
-import { DB, db } from './db';
-import { favsDb } from './favsDb';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/routes/prisma/prisma.service';
 
+@Injectable()
 export class TrackDb {
-  constructor(private readonly db: DB) {}
+  constructor(private prisma: PrismaService) {}
 
-  public getAllTracks() {
-    return this.db.tracks;
+  public async getAllTracks(): Promise<Track[]> {
+    return await this.prisma.track.findMany();
   }
 
-  public getTrackById(id: UUID) {
-    return this.db.tracks.find((track) => track.id === id);
+  public async getTrackById(id: UUID): Promise<Track> {
+    return await this.prisma.track.findUnique({
+      where: { id },
+    });
   }
 
-  public createTrack(dto: CreateTrackDto): Track {
+  public async createTrack(dto: CreateTrackDto): Promise<Track> {
     const { name, duration, artistId, albumId } = dto;
-    const track: Track = {
-      id: uuidv4(),
-      name,
-      duration,
-      artistId: artistId || null,
-      albumId: albumId || null,
-    };
-    this.db.tracks.push(track);
-    return track;
+    return await this.prisma.track.create({
+      data: {
+        name,
+        duration,
+        ...(artistId && {
+          artist: {
+            connect: {
+              id: artistId,
+            },
+          },
+        }),
+        ...(albumId && {
+          album: {
+            connect: {
+              id: albumId,
+            },
+          },
+        }),
+      },
+    });
   }
 
-  public updateTrack(id: UUID, dto: UpdateTrackDto): Track {
-    const track = this.getTrackById(id);
-    const updatedTrack = {
-      ...track,
-      ...dto,
-    };
-    this.db.tracks = this.db.tracks.map((track) =>
-      track.id !== id ? track : updatedTrack,
-    );
-    return updatedTrack;
+  public async updateTrack(id: UUID, dto: UpdateTrackDto): Promise<Track> {
+    return await this.prisma.track.update({
+      where: { id },
+      data: {
+        ...dto,
+      },
+    });
   }
 
-  public deleteTrack(id: UUID) {
-    this.db.tracks = this.db.tracks.filter((track) => track.id !== id);
-    favsDb.removeTrackFromFavorites(id);
+  public async deleteTrack(id: UUID): Promise<void> {
+    await this.prisma.track.delete({
+      where: { id },
+    });
   }
 }
 
-export const trackDb = new TrackDb(db);
+export const trackDb = new TrackDb(new PrismaService);
