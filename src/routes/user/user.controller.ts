@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { UserResponse } from './entities/user.entity';
 import { UUID } from 'src/types/types';
 import { UserService } from './user.service';
 
@@ -22,31 +22,31 @@ export class UserController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createUserDto: CreateUserDto): User {
-    return this.userService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto): Promise<UserResponse>  {
+    return await this.userService.create(createUserDto);
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async findAll(): Promise<UserResponse[]> {
+    return await this.userService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseUUIDPipe) id: UUID): User {
-    return this.userService.findOne(id);
+  async findOne(@Param('id', ParseUUIDPipe) id: UUID): Promise<UserResponse> {
+    return await this.userService.findOne(id);
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id', ParseUUIDPipe) id: UUID,
     @Body() updateUserDto: UpdateUserDto,
-  ): User {
-    return this.userService.update(id, updateUserDto);
+  ): Promise<UserResponse> {
+    return await this.userService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', ParseUUIDPipe) id: UUID) {
-    return this.userService.remove(id);
+  async remove(@Param('id', ParseUUIDPipe) id: UUID): Promise<void> {
+    return await this.userService.remove(id);
   }
 }

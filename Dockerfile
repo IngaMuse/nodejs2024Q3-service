@@ -1,14 +1,12 @@
-# Development mode
-FROM node:22-alpine 
+FROM node:20.11-alpine AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY package*.json ./
+ADD package*.json ./
+ADD prisma ./prisma/
 
-RUN npm install && npm cache clean --force
+RUN npm ci
 
-COPY . .
+ADD . . 
 
-RUN npm run build
-
-CMD [ "npm", "run", "start:dev" ]
+CMD [ "npm", "run", "start:docker" ]

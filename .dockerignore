@@ -1,9 +1,6 @@
 node_modules
-/dist
-.vscode
-.dockerignore
-.env
-.env.example
-.gitignore
 Dockerfile
-test
+.dockerignore
+.git
+.gitignore
+dist

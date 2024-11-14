@@ -1,50 +1,70 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { User, UserResponse } from './entities/user.entity';
 import { userDb } from 'src/database/userDb';
 import { UUID } from 'src/types/types';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto): User {
-    const user = userDb.createUser(createUserDto);
-    return this.createUserResponse(user);
+
+  async create(createUserDto: CreateUserDto): Promise<UserResponse> {
+    try {
+      const user = await userDb.createUser(createUserDto);
+      return this.createUserResponse(user);
+    } catch {
+      throw new BadRequestException();
+    }
   }
 
-  findAll() {
-    const users = userDb.getAllUsers();
+  async findAll(): Promise<UserResponse[]> {
+    const users = await userDb.getAllUsers();
     return users.map((user) => this.createUserResponse(user));
   }
 
-  findOne(id: UUID) {
-    const user = userDb.getUserById(id);
+  async findOne(id: UUID): Promise<UserResponse> {
+    const user = await userDb.getUserById(id);
     if (!user) throw new NotFoundException();
     return this.createUserResponse(user);
   }
 
-  update(id: UUID, updateUserDto: UpdateUserDto) {
-    const user = userDb.getUserById(id);
+  async update(id: UUID, updateUserDto: UpdateUserDto): Promise<UserResponse> {
+    const user = await userDb.getUserById(id);
     if (!user) throw new NotFoundException();
     if (user.password !== updateUserDto.oldPassword)
       throw new ForbiddenException();
-    const updatedUser = userDb.updateUser(id, updateUserDto);
-    return this.createUserResponse(updatedUser);
+    try {
+      const { version } = user;
+      const updatedUser = await userDb.updateUser(
+        id,
+        updateUserDto.newPassword,
+        version + 1,
+      );
+      return this.createUserResponse(updatedUser);
+    } catch {
+      throw new BadRequestException();
+    }
   }
 
-  remove(id: UUID) {
-    const user = userDb.getUserById(id);
+  async remove(id: UUID) {
+    const user = await userDb.getUserById(id);
     if (!user) throw new NotFoundException();
     userDb.deleteUser(id);
   }
 
-  private createUserResponse(user: User): User {
-    const userResponse = { ...user };
-    delete userResponse['password'];
-    return userResponse;
+  private createUserResponse(user: User): UserResponse {
+    const { id, login, version, createdAt, updatedAt } = user;
+    return {
+      id,
+      login,
+      version,
+      createdAt: createdAt.valueOf(),
+      updatedAt: updatedAt.valueOf(),
+    };
   }
 }
