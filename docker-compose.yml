@@ -1,5 +1,6 @@
 services:
   app:
+    image: ingamo/nodejs2024q3-service-app:latest
     build: 
       context: .
       dockerfile: Dockerfile
