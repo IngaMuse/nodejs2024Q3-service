@@ -1,46 +1,45 @@
 services:
-  main:
-    container_name: app
+  app:
     build: 
       context: .
       dockerfile: Dockerfile
-    env_file:
-      - .env
-    environment:
-      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}"
-    volumes:
-      - .:/app
-      - /app/node_modules
     ports:
       - '${PORT}:${PORT}'
     networks:
-      - my-network
+      - app-network
     depends_on:
-      - postgres
+      - postgres  
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}?schema=public"
+    volumes:
+      - .:/usr/src/app
     restart: always
     
   postgres:
-    container_name: postgres
     build: 
-      context: ./database
+      context: ./postgres
       dockerfile: Dockerfile
+    networks:
+      - app-network
     env_file:
       - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - postgres-logs:/var/log/postgresql
     ports:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
     restart: always
-    networks:
-      - my-network
 
 networks:
-  my-network:
-    name: ${NETWORK}
-    driver: ${DRIVER}
+  app-network:
+    driver: bridge
   
-
 volumes:
   postgres-data:
   postgres-logs:

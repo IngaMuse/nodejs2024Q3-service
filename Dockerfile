@@ -1,12 +1,12 @@
-FROM node:20.11-alpine AS builder
+FROM node:20.11-alpine
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-ADD package*.json ./
-ADD prisma ./prisma/
+COPY package*.json ./
+RUN npm install
 
-RUN npm ci
+COPY . .
 
-ADD . . 
+RUN npm run build
 
 CMD [ "npm", "run", "start:docker" ]
