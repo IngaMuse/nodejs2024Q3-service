@@ -12,7 +12,7 @@ export class LoggingMiddleware implements NestMiddleware {
       const { method, originalUrl, body, query } = req;
       const { statusCode } = res;
       const logMessage = `Request: ${method} ${originalUrl} | Body: ${JSON.stringify(body)} | Query: ${JSON.stringify(query)} | Status: ${statusCode}`;
-      this.loggingService.log(logMessage);
+      this.loggingService.log(JSON.stringify(logMessage));
     });
     next();
   }
