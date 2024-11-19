@@ -3,9 +3,12 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { OpenAPIObject, SwaggerModule } from '@nestjs/swagger';
 import * as yamljs from 'yamljs';
+import { LoggingService } from './logging/logging.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const loggingService = app.get(LoggingService);
+  app.useLogger(loggingService);
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
