@@ -10,6 +10,7 @@ import { PrismaModule } from './routes/prisma/prisma.module';
 import { LoggingModule } from './logging/logging.module';
 import { APP_FILTER } from '@nestjs/core';
 import { CatchEverythingFilter } from './filter/http-exception.filter';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CatchEverythingFilter } from './filter/http-exception.filter';
     FavsModule,
     PrismaModule,
     LoggingModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
