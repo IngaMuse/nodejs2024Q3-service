@@ -13,6 +13,7 @@ import { UserModule } from 'src/routes/user/user.module';
     }),
   ],
   providers: [AuthService],
-  controllers: [AuthController]
+  controllers: [AuthController],
+  exports: [AuthService, JwtModule]
 })
 export class AuthModule {}
