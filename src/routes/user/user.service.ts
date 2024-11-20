@@ -33,6 +33,10 @@ export class UserService {
     return this.createUserResponse(user);
   }
 
+  async findByLogin(login: string): Promise<User> {
+    return await userDb.getUserByLogin(login);
+  }
+
   async update(id: UUID, updateUserDto: UpdateUserDto): Promise<UserResponse> {
     const user = await userDb.getUserById(id);
     if (!user) throw new NotFoundException();

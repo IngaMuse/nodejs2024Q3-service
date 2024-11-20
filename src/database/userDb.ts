@@ -18,6 +18,10 @@ export class UserDb {
     });
   }
 
+  async getUserByLogin(login: string): Promise<User> {
+    return await this.prisma.user.findFirst({ where: { login } });
+  }
+
   public async createUser(dto: CreateUserDto): Promise <User> {
     return await this.prisma.user.create({
       data: {
