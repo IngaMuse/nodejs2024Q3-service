@@ -8,8 +8,7 @@ import { TrackModule } from './routes/track/track.module';
 import { FavsModule } from './routes/favs/favs.module';
 import { PrismaModule } from './routes/prisma/prisma.module';
 import { LoggingModule } from './logging/logging.module';
-import { APP_FILTER, APP_GUARD } from '@nestjs/core';
-import { CatchEverythingFilter } from './filter/http-exception.filter';
+import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { JwtAuthGuard } from './auth/auth.guard';
 
