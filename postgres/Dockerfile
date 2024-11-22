@@ -1,1 +1,6 @@
-FROM postgres:latest
+FROM postgres:17-alpine3.20
+
+RUN ["mkdir", "/var/log/postgresql"]
+RUN ["chown", "postgres:postgres", "/var/log/postgresql"]
+
+CMD [ "postgres", "-c", "logging_collector=on", "-c", "log_directory=/var/log/postgresql"]

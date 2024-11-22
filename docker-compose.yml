@@ -3,10 +3,7 @@ services:
     build: 
       context: ./postgres
       dockerfile: Dockerfile
-    networks:
-      - app-network
-    env_file:
-      - .env
+    container_name: postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -17,7 +14,7 @@ services:
     ports:
       - '${POSTGRES_PORT}:${POSTGRES_PORT}'
     restart: always
-  
+
 volumes:
   postgres-data:
   postgres-logs:

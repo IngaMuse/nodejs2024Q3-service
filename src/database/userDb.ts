@@ -7,12 +7,12 @@ import { Injectable } from '@nestjs/common';
 @Injectable()
 export class UserDb {
   constructor(private prisma: PrismaService) {}
-  
+
   public async getAllUsers(): Promise<User[]> {
     return await this.prisma.user.findMany();
   }
 
-  public async getUserById(id: UUID): Promise <User> {
+  public async getUserById(id: UUID): Promise<User> {
     return await this.prisma.user.findUnique({
       where: { id },
     });
@@ -22,7 +22,7 @@ export class UserDb {
     return await this.prisma.user.findFirst({ where: { login } });
   }
 
-  public async createUser(dto: CreateUserDto): Promise <User> {
+  public async createUser(dto: CreateUserDto): Promise<User> {
     return await this.prisma.user.create({
       data: {
         ...dto,
@@ -30,14 +30,17 @@ export class UserDb {
     });
   }
 
-  public async updateUser(id: UUID, password: string,
-    version: number):Promise <User> {
-      return await this.prisma.user.update({
-        where: { id },
-        data: { password, version },
-      });
-  };
-  
+  public async updateUser(
+    id: UUID,
+    password: string,
+    version: number,
+  ): Promise<User> {
+    return await this.prisma.user.update({
+      where: { id },
+      data: { password, version },
+    });
+  }
+
   public async deleteUser(id: UUID): Promise<void> {
     await this.prisma.user.delete({
       where: { id },
@@ -45,4 +48,4 @@ export class UserDb {
   }
 }
 
-export const userDb = new UserDb(new PrismaService);
+export const userDb = new UserDb(new PrismaService());

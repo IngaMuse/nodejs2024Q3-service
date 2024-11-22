@@ -12,7 +12,6 @@ import { UUID } from 'src/types/types';
 
 @Injectable()
 export class UserService {
-
   async create(createUserDto: CreateUserDto): Promise<UserResponse> {
     try {
       const user = await userDb.createUser(createUserDto);

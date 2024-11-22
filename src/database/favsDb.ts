@@ -104,4 +104,4 @@ export class FavsDb {
   }
 }
 
-export const favsDb = new FavsDb(new PrismaService);
+export const favsDb = new FavsDb(new PrismaService());

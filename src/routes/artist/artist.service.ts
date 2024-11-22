@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { Artist } from './entities/artist.entity';
@@ -7,7 +11,6 @@ import { UUID } from 'src/types/types';
 
 @Injectable()
 export class ArtistService {
-
   async create(createArtistDto: CreateArtistDto): Promise<Artist> {
     try {
       return await artistDb.createArtist(createArtistDto);

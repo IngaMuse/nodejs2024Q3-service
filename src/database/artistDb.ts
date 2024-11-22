@@ -47,4 +47,4 @@ export class ArtistDb {
   }
 }
 
-export const artistDb = new ArtistDb(new PrismaService);
+export const artistDb = new ArtistDb(new PrismaService());

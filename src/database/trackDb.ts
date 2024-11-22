@@ -59,4 +59,4 @@ export class TrackDb {
   }
 }
 
-export const trackDb = new TrackDb(new PrismaService);
+export const trackDb = new TrackDb(new PrismaService());

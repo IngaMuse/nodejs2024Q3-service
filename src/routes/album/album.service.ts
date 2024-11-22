@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity';
@@ -7,7 +11,6 @@ import { UUID } from 'src/types/types';
 
 @Injectable()
 export class AlbumService {
-
   async create(createAlbumDto: CreateAlbumDto): Promise<Album> {
     try {
       return await albumDb.createAlbum(createAlbumDto);
@@ -16,7 +19,7 @@ export class AlbumService {
     }
   }
 
-  async findAll(): Promise<Album[]>  {
+  async findAll(): Promise<Album[]> {
     return await albumDb.getAllAlbums();
   }
 

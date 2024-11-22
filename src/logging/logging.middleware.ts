@@ -1,4 +1,3 @@
-
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 import { LoggingService } from './logging.service';
@@ -11,7 +10,9 @@ export class LoggingMiddleware implements NestMiddleware {
     res.on('finish', () => {
       const { method, originalUrl, body, query } = req;
       const { statusCode } = res;
-      const logMessage = `Request: ${method} ${originalUrl} | Body: ${JSON.stringify(body)} | Query: ${JSON.stringify(query)} | Status: ${statusCode}`;
+      const logMessage = `Request: ${method} ${originalUrl} | Body: ${JSON.stringify(
+        body,
+      )} | Query: ${JSON.stringify(query)} | Status: ${statusCode}`;
       this.loggingService.log(JSON.stringify(logMessage));
     });
     next();

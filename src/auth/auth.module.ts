@@ -14,6 +14,6 @@ import { UserModule } from 'src/routes/user/user.module';
   ],
   providers: [AuthService],
   controllers: [AuthController],
-  exports: [AuthService, JwtModule]
+  exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

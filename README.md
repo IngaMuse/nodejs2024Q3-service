@@ -4,17 +4,15 @@
 
 - Git - [Download & Install Git](https://git-scm.com/downloads).
 - Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
-- Docker(Docker Desktop on Windows (WSL))
-- WSL
 
 ## Downloading
 - Download application by zip or by command
 ```
 git clone https://github.com/IngaMuse/nodejs2024Q3-service.git
 ```
--Check Logging-Error-Handling-Authentication-Authorization branch by command
+- Check Logging-Error-Handling-Authentication-Authorization branch by command
 ```
-git checkout Containerization-Docker-Database-ORM
+git checkout Logging-Error-Handling-Authentication-Authorization
 ```
 ## Installing NPM modules
 
@@ -23,17 +21,10 @@ npm install
 ```
 ## Check and rename env
 
-- Ports 4000 and 5432 are free
 - Rename .env.example to .env
 ## Running application
 
-Start docker developing server by command inside root directory(only Postgres)
 ```
-docker-compose up -d
-```
-Apply prisma migrations & run application.
-```
-npm run migrate
 npm run start:dev
 ``` 
 

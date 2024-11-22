@@ -12,7 +12,6 @@ import { artistDb } from 'src/database/artistDb';
 
 @Injectable()
 export class FavsService {
-
   async findAll(): Promise<FavoritesResponse> {
     return await favsDb.getAllFavorites();
   }

@@ -51,4 +51,4 @@ export class AlbumDb {
   }
 }
 
-export const albumDb = new AlbumDb(new PrismaService);
+export const albumDb = new AlbumDb(new PrismaService());

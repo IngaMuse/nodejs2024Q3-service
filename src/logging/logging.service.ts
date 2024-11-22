@@ -10,12 +10,11 @@ const KB = 1024;
 
 @Injectable()
 export class LoggingService implements LoggerService {
-
   log(message: any) {
     if (LOG_LEVEL >= LogLevels.LOG) {
       const formattedMessage = `[LOG] ${message}${EOL}`;
       this.writeLoggingMessageToConsole(formattedMessage);
-      this.loggingToFile(formattedMessage, "LOG");
+      this.loggingToFile(formattedMessage, 'LOG');
     }
   }
 
@@ -23,7 +22,7 @@ export class LoggingService implements LoggerService {
     if (LOG_LEVEL >= LogLevels.FATAL) {
       const formattedMessage = `[FATAL] ${message}${EOL}`;
       this.writeLoggingMessageToConsole(formattedMessage);
-      this.loggingToFile(formattedMessage, "LOG");
+      this.loggingToFile(formattedMessage, 'LOG');
     }
   }
 
@@ -31,7 +30,7 @@ export class LoggingService implements LoggerService {
     if (LOG_LEVEL >= LogLevels.ERROR) {
       const formattedMessage = `[ERROR] ${message}${EOL}`;
       this.writeLoggingMessageToConsole(formattedMessage);
-      this.loggingToFile(formattedMessage, "ERROR");
+      this.loggingToFile(formattedMessage, 'ERROR');
     }
   }
 
@@ -39,7 +38,7 @@ export class LoggingService implements LoggerService {
     if (LOG_LEVEL >= LogLevels.WARN) {
       const formattedMessage = `[WARN] ${message}${EOL}`;
       this.writeLoggingMessageToConsole(formattedMessage);
-      this.loggingToFile(formattedMessage, "LOG");
+      this.loggingToFile(formattedMessage, 'LOG');
     }
   }
 
@@ -47,7 +46,7 @@ export class LoggingService implements LoggerService {
     if (LOG_LEVEL >= LogLevels.DEBUG) {
       const formattedMessage = `[DEBUG] ${message}${EOL}`;
       this.writeLoggingMessageToConsole(formattedMessage);
-      this.loggingToFile(formattedMessage, "LOG");
+      this.loggingToFile(formattedMessage, 'LOG');
     }
   }
 
@@ -55,7 +54,7 @@ export class LoggingService implements LoggerService {
     if (LOG_LEVEL >= LogLevels.VERBOSE) {
       const formattedMessage = `[VERBOSE] ${message}${EOL}`;
       this.writeLoggingMessageToConsole(formattedMessage);
-      this.loggingToFile(formattedMessage, "LOG");
+      this.loggingToFile(formattedMessage, 'LOG');
     }
   }
 
@@ -72,7 +71,7 @@ export class LoggingService implements LoggerService {
     ) {
       try {
         await mkdir('logs');
-      } catch { }
+      } catch {}
       logFilePath = `logs/LOG_${Date.now().valueOf()}_${logType}.log`;
       await appendFile(logFilePath, message);
     } else {

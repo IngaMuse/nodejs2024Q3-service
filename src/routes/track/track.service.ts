@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { trackDb } from 'src/database/trackDb';
@@ -7,7 +11,6 @@ import { Track } from './entities/track.entity';
 
 @Injectable()
 export class TrackService {
-
   async create(createTrackDto: CreateTrackDto): Promise<Track> {
     try {
       return await trackDb.createTrack(createTrackDto);
